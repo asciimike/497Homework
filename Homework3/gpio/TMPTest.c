@@ -68,32 +68,54 @@ void signal_handler(int sig)
  ****************************************************************/
 int main(int argc, char **argv, char **envp)
 {
-	struct pollfd fdset[2];
-	int nfds = 2;
-	int gpio_in_fd, gpio_out_fd, timeout, rc;
+	struct pollfd fdset[3];
+	int nfds = 3;
+	int gpio_in_1_fd, gpio_out_1_fd, gpio_in_2_fd, gpio_out_2_fd;
+	int timeout, rc;
 	char buf[MAX_BUF];
-	int gpio_in, gpio_out;
+	int gpio_in_1, gpio_out_1, gpio_in_2, gpio_out_2;
 	int len;
 
-	if (argc < 3) {
-		printf("Usage: %s <gpio-in> <gpio-out>\n\n");
-		printf("Interrupt driven output\n");
+	// run with ./TMPTest 50 115 51 49
+
+	if (argc < 5) {
+		printf("Usage: %s <gpio-in> <gpio-out>, ... \n\n");
 		exit(-1);
 	}
+
+	//Set up the TMP 101 sensors
+	char firstSensorString[MAX_BUF];
+	char secondSensorString[MAX_BUF];
+	//These values shouldn't be hard coded, and I feel bad about it.
+	sprintf(firstSensorString, "sh setTMP101limits.sh 1 48 19 1b");	
+	sprintf(secondSensorString, "sh setTMP101limits.sh 1 4a 19 1b");
+	system(firstSensorString);
+	system(secondSensorString);
+	puts(firstSensorString);
+	puts(secondSensorString);
 
 	// Set the signal callback for Ctrl-C
 	signal(SIGINT, signal_handler);
 
-	gpio_in = atoi(argv[1]);
-	gpio_out = atoi(argv[2]);
+	gpio_in_1 = atoi(argv[1]);
+	gpio_out_1 = atoi(argv[2]);
+	gpio_export(gpio_in_1);
+	gpio_export(gpio_out_1);
+	gpio_set_dir(gpio_in_1, "in");
+	gpio_set_dir(gpio_out_1, "out");
+	gpio_set_edge(gpio_in_1, "both");
+	gpio_in_1_fd = gpio_fd_open(gpio_in_1, O_RDONLY);
+	gpio_out_1_fd = gpio_fd_open(gpio_out_1, O_RDONLY);
 
-	gpio_export(gpio_in);
-	gpio_export(gpio_out);
-	gpio_set_dir(gpio_in, "in");
-	gpio_set_dir(gpio_out, "out");
-	gpio_set_edge(gpio_in, "both");  // Can be rising, falling or both
-	gpio_in_fd = gpio_fd_open(gpio_in, O_RDONLY);
-	gpio_out_fd = gpio_fd_open(gpio_out, O_RDONLY);
+	gpio_in_2 = atoi(argv[3]);
+	gpio_out_2 = atoi(argv[4]);
+	gpio_export(gpio_in_2);
+	gpio_export(gpio_out_2);
+	gpio_set_dir(gpio_in_2, "in");
+	gpio_set_dir(gpio_out_2, "out");
+	gpio_set_edge(gpio_in_2, "both");
+	gpio_in_2_fd = gpio_fd_open(gpio_in_2, O_RDONLY);
+	gpio_out_2_fd = gpio_fd_open(gpio_out_2, O_RDONLY);
 
 	timeout = POLL_TIMEOUT;
  
@@ -103,8 +125,11 @@ int main(int argc, char **argv, char **envp)
 		fdset[0].fd = STDIN_FILENO;
 		fdset[0].events = POLLIN;
       
-		fdset[1].fd = gpio_in_fd;
+		fdset[1].fd = gpio_in_1_fd;
 		fdset[1].events = POLLPRI;
+		
+		fdset[2].fd = gpio_in_2_fd;
+		fdset[2].events = POLLPRI;
 
 		rc = poll(fdset, nfds, timeout);      
 
@@ -114,22 +139,36 @@ int main(int argc, char **argv, char **envp)
 		}
             
 		if (fdset[1].revents & POLLPRI) {
-			lseek(fdset[1].fd, 0, SEEK_SET);  // Read from the start of the file
+			lseek(fdset[1].fd, 0, SEEK_SET);
 			len = read(fdset[1].fd, buf, MAX_BUF);
 			unsigned int value;
 			if (buf[0] == '0') {
 				value = 0;
 			} else if (buf[0] == '1') {
 				value = 1;
+				//Do an i2cget here to snag the temperature, then convert to F
 			}
-			gpio_set_value(gpio_out, value);
+			gpio_set_value(gpio_out_1, value);
+		} else if (fdset[2].revents & POLLPRI) {
+			lseek(fdset[2].fd, 0, SEEK_SET);
+			len = read(fdset[2].fd, buf, MAX_BUF);
+			unsigned int value;
+			if (buf[0] == '0') {
+				value = 0;
+			} else if (buf[0] == '1') {
+				value = 1;
+				//Do an i2cget here to snag the temperature, then convert to F
+			}
+			gpio_set_value(gpio_out_2, value);
 		}
 
 		fflush(stdout);
 	}
 
-	gpio_fd_close(gpio_in_fd);
-	gpio_fd_close(gpio_out_fd);
+	gpio_fd_close(gpio_in_1_fd);
+	gpio_fd_close(gpio_out_1_fd);
+	gpio_fd_close(gpio_in_2_fd);
+	gpio_fd_close(gpio_out_2_fd);
+
 	return 0;
 }
-
