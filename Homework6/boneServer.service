@@ -1,0 +1,14 @@
+[Unit]
+Description=Dr. Yoder's sample server
+
+[Service]
+WorkingDirectory=/home/root/Courses/exercises/realtime
+ExecStart=/usr/bin/node boneServer.js
+SyslogIdentifier=boneserver
+
+[Service]
+Restart=always
+EnvironmentFile=-/etc/default/node
+
+[Install]
+WantedBy=multi-user.target
