@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	int gpio_fd;
 
 	if (argc < 4) {
-		printf("Arguments are <pin #> <on time> <off time>\n");
+		printf("%s <pin #> <on time> <off time>\n",argv[0]);
 		exit(-1);
 	}
 	gpio = atoi(argv[1]);
