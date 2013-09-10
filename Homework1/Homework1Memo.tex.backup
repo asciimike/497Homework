@@ -1,0 +1,39 @@
+\documentclass[letterpaper,10pt]{texMemo}
+
+\usepackage{graphicx}
+
+\memoto{Dr. Mark Yoder}
+\memofrom{Michael McDonald}
+\memosubject{Problem Set 1 Memo}
+\memodate{\today}
+\logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
+
+\begin{document}
+\maketitle
+
+\section{Weekly Summary}
+
+\begin{center}
+\begin{tabular}{|p{4cm}|l|l|p{8cm}|}
+\hline
+\textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
+\hline
+Unbox BBB and follow instructions in start.htm & Exercise 02 & Completed & Couldn't SSH into the bone originally, so deleted etc/dropbear/dropbear\_rsa\_host\_key and I could SSH into it.\\
+\hline
+Install 3.8 06\_20 Kernel & Exercise 03 & Completed & Only hold the BOOT button for a second or so, otherwise it fails to flash to eMMC.\\
+\hline
+Install Linux Dev Machine & Exercise 01 & Completed & Running Ubuntu 12.04 LTS on my Rose Laptop.\\
+\hline
+Sign up for Google Groups and eLinux & Exercise 09 & Completed & Had to wait a little for my eLinux account, but the others were fairly easy to set up.\\
+\hline
+Gather required materials & Exercise 01 & Completed & 8GB SD cards on order from Amazon (they are ~\$0.20 more than 4GB). Also, the 5-in-1 card reader isn't supported in Ubuntu (at least not out of the box, I'm working on a solution), so I got a MicroSD to USB converter.\\
+\hline
+Set up Git & Exercise 05 & Completed & Git is now set up on both the BBB and my dev machine, and the course materials have been cloned.\\
+\hline
+Pulled helloWorld.c and modified it & Exercise 16 & Completed & I had some extra time so I just did this as well. I will pull again and modify it in class to deal with merge conflicts. I'm using meld instead of the normal command line diff, and it's quite nice.\\ 
+\hline
+\end{tabular}
+\end{center}
+
+
+\end{document}
