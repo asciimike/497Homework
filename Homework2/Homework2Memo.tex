@@ -1,10 +1,12 @@
 \documentclass[letterpaper,10pt]{texMemo}
 
 \usepackage{graphicx}
+\usepackage{listings}
+
 
 \memoto{Dr. Mark Yoder}
 \memofrom{Michael McDonald}
-\memosubject{Problem Set 2 (Exercises ) Memo}
+\memosubject{Problem Set 2 (10, 10a, 11) Memo}
 \memodate{\today}
 \logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
 
@@ -13,17 +15,101 @@
 
 \section{Weekly Summary}
 
-\noindent This week was devoted to setting up a dedicated Linux box to develop on the BBB, as well as setting up the BBB and ensuring that I could get access to Git and compile, run, and then commit code. 
+\noindent This week was devoted to GPIO, both using the Linux file system as
+well as using C. 
 
+\newpage
 \subsection{Exercise Summary}
-\begin{itemize}
-\item Exercise 01: Exercise 01 involved getting a development machine set up as well as gathering the required materials necessary for the class, such as a mouse, keyboard, SD cards and associated USB readers, etc.
-\item Exercise 02: Exercise 02 involved unboxing the BBB, installing the drivers, and running the webserver off the BBB. This involved checking the basic functionality of the BBB and being able to SSH into it. This also involved running host.ipForward.sh in order to deal with ip forwarding to the BBB.
-\item Exercise 03: Exercise 03 involved installing the latest image (06\_20) and flashing it to eMMC.
-\item Exercise 05: Exercise 05 involved installing Git and pulling the course files onto both the host development machine and the BBB.
-\item Exercise 09: Exercise 09 involved registering for the Beagle and ECE 497 Google Groups, as well as getting an account on eLinux.
-\item Exercise 16: Exercise 16 involved getting familiar with Git, making changes to a file, then committing and dealing with merge conflicts.
-\end{itemize}
+
+\subsubsection{Exercise 10}
+
+\noindent Reading a switch can be accomplished by the following commands
+\begin{verbatim}
+ host$ sys/class/gpio: echo XX > export # add pin XX
+ host$ sys/class/gpio: cd gpioXX # go into the gpio directory
+ host$ sys/class/gpio/gpioXX: echo in > direction # make the pin an input
+ host$ sys/class/gpio/gpioXX: cat value # read the value in from the port
+\end{verbatim}
+
+\begin{enumerate}
+ \item What's the min and max voltage? Min: -100mV, Max 3.41V.
+ \item What period is it? The period varies from 250ms to 260ms, with
+occasional jumps as high as 350ms or 400ms.
+ \item How close is it to 200ms? Off by about 50ms
+ \item Why do they differ? Because the OS schedules it to run and occasionally
+gives priority to other processes.
+ \item Run htop and see how much processor you are using. 1-2\% of the CPU, and
+less than 0.25\% of the RAM.
+ \item Try different values for the sleep time (2nd argument). What's the
+shortest
+period you can get? Make a table of the values you try and the corresponding
+period and processor usage. THe shortest period I can get is around 70 to 80ms.
+ \item How stable is the period? The period is not very stable, it usually
+varies by 10 to 20ms, and occasionally jumps 100 to 150ms higher.
+ \item Try launching something like mplayer. How stable is the period? I
+launched gedit, and it was very unstable when the app was launching, but it
+stabilized close to what we saw earlier when it was just running in the
+background. When it was in use, however, the period was much less stable, and
+longer (300-400ms).
+ \item Try cleaning up togglegpio.sh and removing unneeded lines. Does it impact
+the period? Cleaning it up shaved off about 20-30ms, which is 10\% or so, so it
+did a pretty good job in my opinion.
+ \item togglegpio uses bash (first line in file). Try using sh. Is the period
+shorter? Running it with sh seems to take about the same amount of time, though
+it seems to be a little more stable.
+ \item What's the shortest period you can get? sh could run much faster than
+bash, and I saw periods as short 25-30ms.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{| l | l | l |}
+\hline
+\textbf{Time (s)} & \textbf{Period (ms)} & \textbf{CPU Load (\%)}\\
+\hline
+0.1 & 250-260 & 1-2\\
+\hline
+0.05 & 150-170 & 3-4\\
+\hline
+0.01 & 70-150  & 5-6\\ 
+\hline
+0.01 & 70-200 & 6-8\\
+\hline
+\end{tabular}
+\end{center}
+
+
+\newpage
+% Modify togglegpio.sh (call it toggleLED) to toggle the on-board LEDs. Can you
+% get the LED to appear to dim by changing the duty cycle of the toggling?
+\lstinputlisting{toggleLED.sh}
+
+\newpage
+% Display a count of how many times button has been pressed
+\lstinputlisting{countgpio.sh}
+
+\newpage
+% Write a shell script that copies the value of gpio pin 7 (your switch) to gpio
+% pin 60 (Your LED). How much CPU time does it take? What's the delay from the
+% time the input changes until the output changes? How constant is the delay?
+% 
+% You may need to get a function generator and set it to a square wave (0 to 3.3V)
+% and attach it to pin 7 and attached an oscilloscope to pin 60. 
+\lstinputlisting{controlLED.sh}
+
+\noindent The controlLED shell script uses 6-8\% of the CPU, and less than
+0.25\% of the memory, according to htop. The delay is about 20ms, and it remains
+fairly constant.
+
+\newpage
+\subsubsection{Exercise 10a}
+\noindent The min and max value that I've been able to read are 0 to 1800,
+and 12 bits is 4096. Therefore, it is reasonable to assume that AIN0-AIN6
+output a 0.000 to 1.800 volt signal, where a difference by one is a 1mV
+difference.
+
+\lstinputlisting{continuousADC.sh}
+
+\subsubsection{Exercise 11}
 
 \newpage
 
@@ -32,36 +118,14 @@
 \hline
 \textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
 \hline
-Install Linux Dev Machine & Exercise 01 & Completed & Running Ubuntu 12.04 LTS on my Rose Laptop.\\
-\hline
-Gather required materials & Exercise 01 & Completed & 8GB SD cards on order from Amazon (they are ~\$0.20 more than 4GB). Also, the 5-in-1 card reader isn't supported in Ubuntu (at least not out of the box, I'm working on a solution), so I got a MicroSD to USB converter.\\
-\hline
-Unbox BBB and follow instructions in start.htm & Exercise 02 & Completed & Couldn't SSH into the bone originally, so deleted etc/dropbear/dropbear\_rsa\_host\_key and I could SSH into it.\\
-\hline
-Install 3.8 06\_20 Kernel & Exercise 03 & Completed & Only hold the BOOT button for a second or so, otherwise it fails to flash to eMMC.\\
-\hline
-Set up Git & Exercise 05 & Completed & Git is now set up on both the BBB and my dev machine, and the course materials have been cloned.\\
-\hline
-Sign up for Google Groups and eLinux & Exercise 09 & Completed & Had to wait a little for my eLinux account, but the others were fairly easy to set up.\\
-\hline
-Pulled helloWorld.c and modified it & Exercise 16 & Completed & I had some extra time so I just did this as well. I will pull again and modify it in class to deal with merge conflicts. I'm using meld instead of the normal command line diff, and it's quite nice.\\ 
+& & & \\
 \hline
 \end{tabular}
 \end{center}
 
 \noindent The main points I took away from these exercises were the following:
 \begin{itemize}
- \item Even though there are instructions, everything is slightly different, so you have to be agile and be able to adapt to slight differences in software or hardware in order to complete everything properly.
- \item Sometimes it's easier to make a rough pass, learn what the main purpose of installing software or typing a specific command in, and then re-do everything, just to get a hang of what the purpose actually was.
- \item A strong understanding of the Linux command line is a must for this class, and we really only touch on it in CSSE 332 (or when people use it individually), but I would like to see a brief intro to it for people who may not have as good a grasp or may have forgotten the specifics of how to use certain commands.
+ \item
 \end{itemize}
-
-\noindent I added several things to the course materials:
-\begin{itemize}
- \item Added a \LaTeX memo class and an example to the exercises.git repo under /tex.
- \item Added a section to Exercise 16 on setting up a graphical merge tool.
-\end{itemize}
-
-
 
 \end{document}
