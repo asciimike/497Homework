@@ -51,6 +51,7 @@ From https://www.ridgerun.com/developer/wiki/index.php/Gpio-int-test.c
  * Global variables
  ****************************************************************/
 int keepgoing = 1;	// Set to 0 when ctrl-c is pressed
+int count = 0;	//interrupt count, because global variables are totes legit
 
 /****************************************************************
  * signal_handler
@@ -88,7 +89,7 @@ int main(int argc, char **argv, char **envp)
 
 	gpio_export(gpio);
 	gpio_set_dir(gpio, "in");
-	gpio_set_edge(gpio, "both");  // Can be rising, falling or both
+	gpio_set_edge(gpio, "falling");  // Can be rising, falling or both
 	gpio_fd = gpio_fd_open(gpio, O_RDONLY);
 
 	timeout = POLL_TIMEOUT;
@@ -116,8 +117,7 @@ int main(int argc, char **argv, char **envp)
 		if (fdset[1].revents & POLLPRI) {
 			lseek(fdset[1].fd, 0, SEEK_SET);  // Read from the start of the file
 			len = read(fdset[1].fd, buf, MAX_BUF);
-			printf("\npoll() GPIO %d interrupt occurred, value=%c, len=%d\n",
-				 gpio, buf[0], len);
+			printf("Button value incremented to %d\n",count++);
 		}
 
 		if (fdset[0].revents & POLLIN) {
