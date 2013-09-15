@@ -7,13 +7,33 @@
 //Created in AVR32 Studio (version 2.0.2) running on Ubuntu 8.04
 // Modified by Mark A. Yoder, 21-July-2011
 // Modified by Mark A. Yoder 30-May-2013
+// Modified by Mike McDonald 15-Sept-2013
 
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <poll.h>
+#include <signal.h>	// Defines signal-handling functions (i.e. trap Ctrl-C)
 #include "gpio-utils.h"
+
+/****************************************************************
+ * Global variables
+ ****************************************************************/
+int keepgoing = 1;	// Set to 0 when ctrl-c is pressed
+
+/****************************************************************
+ * signal_handler
+ ****************************************************************/
+void signal_handler(int sig);
+// Callback called when SIGINT is sent to the process (Ctrl-C)
+void signal_handler(int sig)
+{
+	printf("\nCtrl-C pressed, cleaning up and exiting..\n");
+	keepgoing = 0;
+}
 
 int main(int argc, char** argv)
 {
@@ -23,13 +43,17 @@ int main(int argc, char** argv)
 	int toggle = 0;
 	int onTime;	// Time in micro sec to keep the signal on/off
 	int offTime;
-	int gpio;
+	unsigned int gpio;
 	int gpio_fd;
 
 	if (argc < 4) {
 		printf("%s <pin #> <on time> <off time>\n",argv[0]);
 		exit(-1);
 	}
+
+	// Set the signal callback for Ctrl-C
+	signal(SIGINT, signal_handler);
+
 	gpio = atoi(argv[1]);
 	onTime = atoi(argv[2]);
 	offTime = atoi(argv[3]);
@@ -55,11 +79,10 @@ int main(int argc, char** argv)
 	gpio_fd = gpio_fd_open(gpio, O_RDONLY);
 
 	//Run an infinite loop - will require Ctrl-C to exit this program
-	while(1)
+	while(keepgoing)
 	{
 		toggle = !toggle;
 		gpio_set_value(gpio, toggle);
-//		printf("...value set to %d...\n", toggle);
 		
 		if (toggle) {
 			usleep(onTime);
