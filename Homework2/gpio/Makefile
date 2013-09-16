@@ -4,7 +4,7 @@ TOOLS_CFLAGS	:= -Wstrict-prototypes -Wshadow -Wpointer-arith -Wcast-qual \
 #
 # Programs
 #
-all:	gpio-int-test togglegpio
+all:	gpio-int-test togglegpio gpioThru fourThru etch_gpio
 
 gpio-int-test:  gpio-int-test.o gpio-utils.o
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -13,6 +13,12 @@ togglegpio:	togglegpio.o gpio-utils.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 gpioThru:	gpioThru.o gpio-utils.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+fourThru: fourThru.o gpio-utils.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+etch_gpio: etch_gpio.o gpio-utils.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 
@@ -24,4 +30,4 @@ gpioThru:	gpioThru.o gpio-utils.o
 	$(CC) $(CFLAGS) $(TOOLS_CFLAGS) -c $< -o $@
 
 clean:
-	rm gpio-int-test.o gpio-utils.o
+	rm gpio-int-test.o gpio-utils.o gpioThru.o fourThru.o etch_gpio.o
