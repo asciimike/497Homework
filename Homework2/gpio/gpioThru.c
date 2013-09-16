@@ -51,7 +51,6 @@ From https://www.ridgerun.com/developer/wiki/index.php/Gpio-int-test.c
  * Global variables
  ****************************************************************/
 int keepgoing = 1;	// Set to 0 when ctrl-c is pressed
-int count = 0;	//interrupt count, because global variables are totes legit
 
 /****************************************************************
  * signal_handler
@@ -71,26 +70,30 @@ int main(int argc, char **argv, char **envp)
 {
 	struct pollfd fdset[2];
 	int nfds = 2;
-	int gpio_fd, timeout, rc;
+	int gpio_in_fd, gpio_out_fd, timeout, rc;
 	char buf[MAX_BUF];
-	unsigned int gpio;
+	int gpio_in, gpio_out;
 	int len;
 
-	if (argc < 2) {
-		printf("Usage: gpio-int <gpio-pin>\n\n");
-		printf("Waits for a change in the GPIO pin voltage level or input on stdin\n");
+	if (argc < 3) {
+		printf("Usage: %s <gpio-in> <gpio-out>\n\n");
+		printf("Interrupt driven output\n");
 		exit(-1);
 	}
 
 	// Set the signal callback for Ctrl-C
 	signal(SIGINT, signal_handler);
 
-	gpio = atoi(argv[1]);
+	gpio_in = atoi(argv[1]);
+	gpio_out = atoi(argv[2]);
 
-	gpio_export(gpio);
-	gpio_set_dir(gpio, "in");
-	gpio_set_edge(gpio, "falling");  // Can be rising, falling or both
-	gpio_fd = gpio_fd_open(gpio, O_RDONLY);
+	gpio_export(gpio_in);
+	gpio_export(gpio_out);
+	gpio_set_dir(gpio_in, "in");
+	gpio_set_dir(gpio_out, "out");
+	gpio_set_edge(gpio_in, "both");  // Can be rising, falling or both
+	gpio_in_fd = gpio_fd_open(gpio_in, O_RDONLY);
+	gpio_out_fd = gpio_fd_open(gpio_out, O_RDONLY);
 
 	timeout = POLL_TIMEOUT;
  
@@ -100,7 +103,7 @@ int main(int argc, char **argv, char **envp)
 		fdset[0].fd = STDIN_FILENO;
 		fdset[0].events = POLLIN;
       
-		fdset[1].fd = gpio_fd;
+		fdset[1].fd = gpio_in_fd;
 		fdset[1].events = POLLPRI;
 
 		rc = poll(fdset, nfds, timeout);      
@@ -110,25 +113,29 @@ int main(int argc, char **argv, char **envp)
 			return -1;
 		}
       
+		
 		if (rc == 0) {
 			printf(".");
 		}
+		
             
 		if (fdset[1].revents & POLLPRI) {
 			lseek(fdset[1].fd, 0, SEEK_SET);  // Read from the start of the file
 			len = read(fdset[1].fd, buf, MAX_BUF);
-			printf("Button value incremented to %d\n",count++);
-		}
-
-		if (fdset[0].revents & POLLIN) {
-			(void)read(fdset[0].fd, buf, 1);
-			printf("\npoll() stdin read 0x%2.2X\n", (unsigned int) buf[0]);
+			unsigned int value;
+			if (buf[0] == '0') {
+				value = 0;
+			} else if (buf[0] == '1') {
+				value = 1;
+			}
+			gpio_set_value(gpio_out, value);
 		}
 
 		fflush(stdout);
 	}
 
-	gpio_fd_close(gpio_fd);
+	gpio_fd_close(gpio_in_fd);
+	gpio_fd_close(gpio_out_fd);
 	return 0;
 }
 
