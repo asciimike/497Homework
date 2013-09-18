@@ -2,6 +2,7 @@
 # From http://wh1t3s.com/2009/05/14/reading-beagleboard-gpio/
 #
 # Read an analog input from a specified port, and continuously displays the result to the console
+# Created by Mark Yoder, Modified by Mike McDonald 13-Sep-2013
 
 if [ $# -lt 1 ]; then
     echo "Usage: $0 AIN#"

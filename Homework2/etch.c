@@ -204,6 +204,7 @@ void printGrid(int a[N][N], int isErasing)
 }
 
 // Thank you stackoverflow: http://stackoverflow.com/questions/421860/c-c-capture-characters-from-standard-input-without-waiting-for-enter-to-be-pr
+// Pulls in characters from the console without the need for a return
 char getch() {
         char buf = 0;
         struct termios old = {0};

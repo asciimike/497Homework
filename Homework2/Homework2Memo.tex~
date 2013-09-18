@@ -3,10 +3,9 @@
 \usepackage{graphicx}
 \usepackage{listings}
 
-
 \memoto{Dr. Mark Yoder}
 \memofrom{Michael McDonald}
-\memosubject{Problem Set 2 (10, 10a, 11) Memo}
+\memosubject{Problem Set 2 (8, 10, 10a, 11) Memo}
 \memodate{\today}
 \logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
 
@@ -16,10 +15,50 @@
 \section{Weekly Summary}
 
 \noindent This week was devoted to GPIO, both using the Linux file system as
-well as using C. 
+well as using C to access the files. Most of the exercises centered around the
+idea of reading from files to gather input and then writing to files to produce
+output. There was also a little in exercises 8 and 8a on the kernel and cross
+compiling for ARMs. All source code is stored on my git repo. \\
 
-\newpage
+\begin{center}
+\begin{tabular}{|p{4cm}|l|l|p{8cm}|}
+\hline
+\textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
+\hline
+Compile the 3.8 Kernel & Exercise 8 & Completed & I didn't have to deal with
+the ncurses failed dependency.\\
+\hline
+Install necessary cross compilation tools & Exercise 8a & Completed & \\
+\hline
+Read and Control GPIO's via the Linux File System & Exercise 10 & Completed &
+Some I/O pins don't work well, possibly due to the presence of pull up/pull
+down resistors and those being enabled.\\
+\hline
+Read analog input values from AIN channels & Exercise 10a & Completed & I
+actually wish they output a straight numerical value, but I guess I can deal
+with 1mV per division. It makes the math simpler, and is probably enough
+resolution for most people.\\
+\hline
+Control GPIO's via C & Exercise 11 & Completed & This part was really cool. It
+was nice to see the C code mesh with the real world (not just key inputs). \\
+\hline
+\end{tabular}
+\end{center}
+
 \subsection{Exercise Summary}
+
+\subsubsection{Exercise 8}
+\noindent I feel like I have ascended to a whole new plateau of nerddom after
+having built the Linux Kernel. It is amazing. That's really all I have to say
+about that. Everything went surprisingly smoothly. I didn't have to deal with
+the ncurses library dependency issue, which was nice. Also, downloading
+everything only took about 12 minutes, and compilation probably took about that
+long as well. The video went a little fast to follow, I wish we could watch it
+at about half speed.
+
+\subsubsection{Exercise 8a}
+\noindent Cross compilation went off without a hitch. Pretty cool to be able to
+do that.
 
 \subsubsection{Exercise 10}
 
@@ -75,56 +114,141 @@ bash, and I saw periods as short 25-30ms.
 0.01 & 70-200 & 6-8\\
 \hline
 \end{tabular}
-\end{center}
+\end{center}\\
 
-
-\newpage
+%\newpage
 % Modify togglegpio.sh (call it toggleLED) to toggle the on-board LEDs. Can you
 % get the LED to appear to dim by changing the duty cycle of the toggling?
-\lstinputlisting{toggleLED.sh}
+%\lstinputlisting{toggleLED.sh}
 
-\newpage
+%\newpage
 % Display a count of how many times button has been pressed
-\lstinputlisting{countgpio.sh}
+%\lstinputlisting{countgpio.sh}
 
-\newpage
+%\newpage
 % Write a shell script that copies the value of gpio pin 7 (your switch) to gpio
 % pin 60 (Your LED). How much CPU time does it take? What's the delay from the
 % time the input changes until the output changes? How constant is the delay?
 % 
 % You may need to get a function generator and set it to a square wave (0 to 3.3V)
 % and attach it to pin 7 and attached an oscilloscope to pin 60. 
-\lstinputlisting{controlLED.sh}
+%\lstinputlisting{controlLED.sh}
 
 \noindent The controlLED shell script uses 6-8\% of the CPU, and less than
 0.25\% of the memory, according to htop. The delay is about 20ms, and it remains
 fairly constant.
 
-\newpage
 \subsubsection{Exercise 10a}
 \noindent The min and max value that I've been able to read are 0 to 1800,
 and 12 bits is 4096. Therefore, it is reasonable to assume that AIN0-AIN6
-output a 0.0
+output a 0.000 to 1.800 volt signal, where a difference by one is a 1mV
+difference.
 
-% \lstinputlisting{continuousADC.sh}
+%\lstinputlisting{continuousADC.sh}
 
+%\newpage
 \subsubsection{Exercise 11}
+% Compile and run it. Does the correct waveform appear on the oscilloscope?
+% Use htop to measure the CPU usage.
+% Try different periods. Make a chart of the input period vs. the measured
+% period vs. CPU usage.
+% How stable is the waveform? Look at several cycles. Are they always the same
+% length. Explain. 
 
-\newpage
+\noindent The correct waveform does appear on the scope. I set up a 50\% duty
+cycle square wave with a period of 0.2 seconds, and I'm getting a 50\% duty
+cycle square wave with a Frequency of 4.98-5.00 hz (or 200-201ms period), which
+is fairly close to my 0.2 second desired period. The waveform is remarkably
+stable, at least for relatively slow waveforms; however, for higher frequency
+waveforms, they become less and less stable, and require more and more CPU
+power to get the timing correct. Additionally, there are occasionally stretches
+where the waveform is interrupted as the OS is servicing other requests. This
+data is presented in the table below. \\
 
 \begin{center}
-\begin{tabular}{|p{4cm}|l|l|p{8cm}|}
+\begin{tabular}{| l | l | l |}
 \hline
-\textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
+\textbf{Desired Period (ms)} & \textbf{Actual Period (ms)} & \textbf{CPU Load
+(\%)}\\
 \hline
-& & & \\
+1000 & 1000 & 0 \\
+\hline
+100 & 100-101  & 0 \\
+\hline
+10 & 10.5-12.0 & 4 \\ 
+\hline
+1 & 1.25-2.0 & 14-16 \\
+\hline
+0.1 & 0.4-1 & 30-31 \\
 \hline
 \end{tabular}
-\end{center}
+\end{center} \\
+% Modify togglegpio.c to take the gpio number.
+% Presently one parameter specifies both the on and off time. Modify the code
+% so the on and off times are controlled separately.
+% Add in interrupt handler (see gpio-int-test.c) to trap ctrl-C and close
+% things properly.
+% What's the highest frequency you can see on the 'scope? 
 
+%\newpage
+%\lstinputlisting{gpio/togglegpio.c}
+\noindent The highest frequency seen in my modified togglegpio was 2-3kHz,
+however it was very unstable, and I believe the highest stable frequencies are
+those less than 100Hz. \\
+
+% Modify gpio-init-test.c to count the number of times the User button has
+% been pressed. Set edge to only count releases.
+
+%\newpage
+%\lstinputlisting{gpio/gpio-int-test.c}
+% Copy gpio-init-test.c to gpioThru.c and modify it to copy the value of one
+% port to another. You'll have to add code to open a second gpio port for writing
+% (check gpio_set_dir).
+% gpio7 is attached to pin P9_42 on the Bone. Attach a function generator to
+% this pin. Be sure to set the HiLevel to 3.3V and the LoLevel to 0. Does the
+% output track the input?
+% What's the highest frequency the output will track the input? What's the CPU
+% usage?
+% What's the delay from when the input changes to when the output changes? 
+
+%\newpage
+%\lstinputlisting{gpio/gpioThru.c}
+\noindent The output tracks the input fairly well, usually about 0.2 to 0.3ms
+behind, but sometimes stretches to 1-2ms. Depending on the input frequency, and
+the other programs running on the bone, the signal gets less stable the higher
+the frequency and the more programs running. It will track reliably up to 100
+or 200 Hz, and will still track somewhat well to 1kHz. Above 1kHz however, it
+really breaks down and by 2kHz it's almost totally unrecognizable. CPU usage is
+nearly zero for frequencies below 10Hz, and they rise in the single digits
+until about 250Hz, and by the time 1kHz rolls around, the program takes up
+about 25\% of the CPU.
+
+\subsection{GPIO input and Etch-a-Sketch}
+\noindent The actual homework assignment was really easy to complete once the
+exercises were completed. The etch-a-sketch took some time, but a majority of
+that time was due to a bit of proper design, which paid off in the end, where I
+literally combined my two final products (the etch-a-sketch and the four
+input/output C program) and they just worked perfectly the first time.
+Shocking, really. I finally feel like I'm getting a hang of physical computing,
+since I feel like that was a non-trivial product that was created without
+serious difficulty. I also really like being able to deal with physical input,
+such as the switches that I wired up, and see that do something. Like the rest
+of the exercises in this memo, all the source is available on my github repo. \\
+
+
+\subsection{Takeaway Points}
 \noindent The main points I took away from these exercises were the following:
 \begin{itemize}
- \item
+  \item Linux is impressively huge. I'm pretty amazed that people created it and
+still work on it, and I hope to work on it as well.
+  \item I think I have started to get a better feel for how computers have been
+developed, interfacing all of the hardware I/O together to get say key input
+and light output. I think it will be really cool to see the I2C LED screen
+hooked up next week.
+  \item I wish the exercises were renumbered to deal with dependencies (so that
+exercise 8a came before exercise 8, for instance). It occasionally gets
+confusing to be jumping around between exercises that are non-sequential to do
+dependent tasks.
 \end{itemize}
 
 \end{document}
