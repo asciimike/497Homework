@@ -1,0 +1,47 @@
+\documentclass[letterpaper,10pt]{texMemo}
+
+\usepackage{graphicx}
+
+\memoto{Dr. Mark Yoder}
+\memofrom{Michael McDonald}
+\memosubject{Week 4 (GDB, Make) Memo}
+\memodate{\today}
+\logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
+
+\begin{document}
+\maketitle
+
+\section{Exercise Summary}
+
+\noindent Matt Skorina and I have Homework 4 almost complete (we have all the
+code written for searching and following, but the stepper is not stepping
+properly).
+
+\begin{center}
+\begin{tabular}{|p{4cm}|l|l|p{8cm}|}
+\hline
+\textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
+\hline
+GDB & Exercise 14 & Completed & GDB is powerful but can be difficult to work
+with, as commands aren't always intuitive. \\
+\hline
+Make & Exercise 15 & Completed & Makefiles are awesome. I feel like they can
+get complicated quickly for large projects, but that is still way simpler than
+trying to do it all by hand.\\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The main points I took away from these exercises were the following:
+\begin{itemize}
+ \item There are some pretty awesome software tools out there (that are open
+source) that allow you to simplify your workflow by creating a solid tool chain.
+ \item That being said, creating your tool chain can be somewhat difficult and
+also time consuming. Luckily, these tools were already installed and ready to
+use.
+ \item LLDB, the ``new'' version of GDB, is actually much nicer. I used it with
+Objective-C programming this summer, and I found it much nicer to use and just
+as powerful (if not more so).
+\end{itemize}
+
+\end{document}
