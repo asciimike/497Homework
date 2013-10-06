@@ -4,64 +4,45 @@
 
 \memoto{Dr. Mark Yoder}
 \memofrom{Michael McDonald}
-\memosubject{Problem Set 1 (Exercises 01, 02, 03, 05, 09, 16) Memo}
+\memosubject{Week 3 (I$^2$C, PWM, Device Tree Overlays) Memo}
 \memodate{\today}
 \logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
 
 \begin{document}
 \maketitle
 
-\section{Weekly Summary}
+\section{Exercise Summary}
 
-\noindent This week was devoted to setting up a dedicated Linux box to develop on the BBB, as well as setting up the BBB and ensuring that I could get access to Git and compile, run, and then commit code. 
-
-\subsection{Exercise Summary}
-\begin{itemize}
-\item Exercise 01: Exercise 01 involved getting a development machine set up as well as gathering the required materials necessary for the class, such as a mouse, keyboard, SD cards and associated USB readers, etc.
-\item Exercise 02: Exercise 02 involved unboxing the BBB, installing the drivers, and running the webserver off the BBB. This involved checking the basic functionality of the BBB and being able to SSH into it. This also involved running host.ipForward.sh in order to deal with ip forwarding to the BBB.
-\item Exercise 03: Exercise 03 involved installing the latest image (06\_20) and flashing it to eMMC.
-\item Exercise 05: Exercise 05 involved installing Git and pulling the course files onto both the host development machine and the BBB.
-\item Exercise 09: Exercise 09 involved registering for the Beagle and ECE 497 Google Groups, as well as getting an account on eLinux.
-\item Exercise 16: Exercise 16 involved getting familiar with Git, making changes to a file, then committing and dealing with merge conflicts.
-\end{itemize}
-
-\newpage
+\noindent I have completed Homework 3.
 
 \begin{center}
 \begin{tabular}{|p{4cm}|l|l|p{8cm}|}
 \hline
 \textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
 \hline
-Install Linux Dev Machine & Exercise 01 & Completed & Running Ubuntu 12.04 LTS on my Rose Laptop.\\
+Device Tree Overlays & Exercise 11a & Completed & These pins seem to work, but
+I'm worried that the pins we need to use for our homework won't since they
+aren't free.\\
 \hline
-Gather required materials & Exercise 01 & Completed & 8GB SD cards on order from Amazon (they are ~\$0.20 more than 4GB). Also, the 5-in-1 card reader isn't supported in Ubuntu (at least not out of the box, I'm working on a solution), so I got a MicroSD to USB converter.\\
+I$^2$C Communication & Exercise 12 & Completed & The only thing I noticed is
+that myi2cget requires the decimal versions of addresses, rather than hex.\\
 \hline
-Unbox BBB and follow instructions in start.htm & Exercise 02 & Completed & Couldn't SSH into the bone originally, so deleted etc/dropbear/dropbear\_rsa\_host\_key and I could SSH into it.\\
-\hline
-Install 3.8 06\_20 Kernel & Exercise 03 & Completed & Only hold the BOOT button for a second or so, otherwise it fails to flash to eMMC.\\
-\hline
-Set up Git & Exercise 05 & Completed & Git is now set up on both the BBB and my dev machine, and the course materials have been cloned.\\
-\hline
-Sign up for Google Groups and eLinux & Exercise 09 & Completed & Had to wait a little for my eLinux account, but the others were fairly easy to set up.\\
-\hline
-Pulled helloWorld.c and modified it & Exercise 16 & Completed & I had some extra time so I just did this as well. I will pull again and modify it in class to deal with merge conflicts. I'm using meld instead of the normal command line diff, and it's quite nice.\\ 
+PWM Control & Exercise 13 & Completed & A 1MHz signal is very crisp, but the
+10MHz signal was exactly as described (~9MHz and not clean at all). There's also
+a pretty impressive (~1V) overshoot above 3.3V for the faster signals.\\
 \hline
 \end{tabular}
 \end{center}
 
 \noindent The main points I took away from these exercises were the following:
 \begin{itemize}
- \item Even though there are instructions, everything is slightly different, so you have to be agile and be able to adapt to slight differences in software or hardware in order to complete everything properly.
- \item Sometimes it's easier to make a rough pass, learn what the main purpose of installing software or typing a specific command in, and then re-do everything, just to get a hang of what the purpose actually was.
- \item A strong understanding of the Linux command line is a must for this class, and we really only touch on it in CSSE 332 (or when people use it individually), but I would like to see a brief intro to it for people who may not have as good a grasp or may have forgotten the specifics of how to use certain commands.
+ \item The on-board hardware is awesome (both I$^2$C and PWM). It makes life so
+much easier, and decreases development time (and reduces frustration). That
+being said, it's much harder to understand how all of the layers interact
+because there are so many more layers between the software and the hardware.
+ \item There's a difference between decimal and hexidecimal, and it can come
+around to bite you when doing I$^2$C if you aren't careful about which
+functions take what as an argument.
 \end{itemize}
-
-\noindent I added several things to the course materials:
-\begin{itemize}
- \item Added a \LaTeX memo class and an example to the exercises.git repo under /tex.
- \item Added a section to Exercise 16 on setting up a graphical merge tool.
-\end{itemize}
-
-
 
 \end{document}

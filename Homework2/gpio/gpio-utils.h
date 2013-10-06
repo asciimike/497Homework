@@ -1,5 +1,6 @@
 
 #define SYSFS_GPIO_DIR "/sys/class/gpio"
+#define ANALOG_INPUT_DIR "/sys/devices/ocp.2/helper.14"
 #define MAX_BUF 64
 
 int gpio_export(unsigned int gpio);
