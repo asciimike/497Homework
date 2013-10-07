@@ -1,0 +1,22 @@
+The book includes ~20 lines of ~250 CONFIG_USB*, of the several thousand defines in the file. Overall, our file doesn't differ too much from theirs, other than the fact that we have some defines that they don't, due to new technology. Note that the path is KERNEL/include/generated/autoconf.h
+
+#define CONFIG_USB_ALI_M5632 1
+#define CONFIG_USB_SI470X_MODULE 1
+#define CONFIG_USB_GSPCA_JL2005BCD_MODULE 1
+#define CONFIG_USB_SERIAL_NAVMAN_MODULE 1
+#define CONFIG_USB_F_EEM_MODULE 1
+#define CONFIG_USB_SERIAL_EDGEPORT_TI_MODULE 1
+#define CONFIG_USB_SERIAL_SAFE_MODULE 1
+#define CONFIG_USB_OHCI_LITTLE_ENDIAN 1
+#define CONFIG_USB_GSPCA_SQ905_MODULE 1
+#define CONFIG_USB_SERIAL_FTDI_SIO_MODULE 1
+#define CONFIG_USB_SERIAL_QUALCOMM_MODULE 1
+#define CONFIG_USB_STORAGE_USBAT_MODULE 1
+#define CONFIG_USB_SERIAL_MOS7840_MODULE 1
+#define CONFIG_USB_NET_INT51X1_MODULE 1
+#define CONFIG_USB_PWC_INPUT_EVDEV 1
+#define CONFIG_USB_GSPCA_SUNPLUS_MODULE 1
+#define CONFIG_USB_EHCI_ROOT_HUB_TT 1
+#define CONFIG_USB_SERIAL_OPTION_MODULE 1
+#define CONFIG_USB_GSPCA_SE401_MODULE 1
+#define CONFIG_USB 1
