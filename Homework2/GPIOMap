@@ -1,0 +1,17 @@
+Up: 
+	Button: 50
+	LED: 115
+Down: 
+	Button: 51
+	LED: 49
+Left: 
+	Button: 20
+	LED: 48
+Right: 
+	Button: 7
+	LED: 112
+
+./gpioThru 50 115 &
+./gpioThru 51 49 &
+./gpioThru 20 48 &
+./gpioThru 7 112 &

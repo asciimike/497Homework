@@ -1,0 +1,81 @@
+\documentclass[letterpaper,10pt]{texMemo}
+
+\usepackage{graphicx}
+
+\memoto{Dr. Mark Yoder}
+\memofrom{Michael McDonald}
+\memosubject{Week 6 Memo}
+\memodate{\today}
+\logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
+
+\begin{document}
+\maketitle
+
+\section{Homework 6 Summary}
+\noindent Definitions for CONFIG\_CPU\_V6, CONFIG\_CPU\_V6K, and CONFIG\_CPU\_V7
+can be found in .../arch/arm/mm/Kconfig and look something like this:
+\begin{verbatim}
+ # ARMv7
+config CPU_V7
+	bool "Support ARM V7 processor" if ARCH_INTEGRATOR || MACH_REALVIEW_EB
+|| MACH_REALVIEW_PBX
+	select CPU_32v6K
+	select CPU_32v7
+	select CPU_ABRT_EV7
+	select CPU_CACHE_V7
+	select CPU_CACHE_VIPT
+	select CPU_COPY_V6 if MMU
+	select CPU_CP15_MMU if MMU
+	select CPU_CP15_MPU if !MMU
+	select CPU_HAS_ASID if MMU
+	select CPU_PABRT_V7
+	select CPU_TLB_V7 if MMU
+\end{verbatim}
+\noindent This basically creates a dependency tree of necessary components that
+must be initialized for this processor. The actual selection of which
+definition we use occurs in KERNEL/.config, which looks like this:
+
+\begin{verbatim}
+#
+# Processor Type
+#
+CONFIG_CPU_V7=y
+CONFIG_CPU_32v6K=y
+CONFIG_CPU_32v7=y
+CONFIG_CPU_ABRT_EV7=y
+CONFIG_CPU_PABRT_V7=y
+CONFIG_CPU_CACHE_V7=y
+CONFIG_CPU_CACHE_VIPT=y
+CONFIG_CPU_COPY_V6=y
+CONFIG_CPU_TLB_V7=y
+CONFIG_CPU_HAS_ASID=y
+CONFIG_CPU_CP15=y
+CONFIG_CPU_CP15_MMU=y
+\end{verbatim}
+
+\newpage
+\noindent The command \verb b  \verb start_kernel  can be found at line 104 in
+the file KERNEL/arch/arm/kernel/head-common.S, which is included at the bottom
+of KERNEL/arch/arm/kernel/head.S. This calls the start\_kernel() function in
+main.c, which is located in KERNEL/init/main.c, located at line 473.
+
+
+\section{Exercise Summary}
+
+\begin{center}
+\begin{tabular}{|p{4cm}|l|l|p{8cm}|}
+\hline
+\textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
+\hline
+ & Exercise  & Completed & \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\noindent The main points I took away from these exercises were the following:
+\begin{itemize}
+ \item
+\end{itemize}
+
+\end{document}

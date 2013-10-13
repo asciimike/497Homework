@@ -1,0 +1,52 @@
+\documentclass[letterpaper,10pt]{texMemo}
+
+\usepackage{graphicx}
+
+\memoto{Dr. Mark Yoder}
+\memofrom{Michael McDonald}
+\memosubject{Week 5 (Kernel and memmap, Exercises 8, 8a, 11b, 23) Memo}
+\memodate{\today}
+\logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
+
+\begin{document}
+\maketitle
+
+\section{Exercise Summary}
+
+\noindent Homework 5 is complete except for the o-scope things (I
+wasn't on campus this weekend and don't have a good scope at home).\\
+
+\begin{center}
+\begin{tabular}{|p{4cm}|l|l|p{8cm}|}
+\hline
+\textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
+\hline
+Compile the 3.8 Kernel & Exercise 8 & Completed & I did this in Memo 2,
+because it was on the calendar then.\\
+\hline
+Install necessary cross compilation tools & Exercise 8a & Completed & I did this
+in Memo 2,
+because it was on the calendar then.\\
+\hline
+Memmap GPIO access & Exercise 11 & Completed & This is awesome. It also makes
+me want to write another layer of abstraction to do GPIO calls, because it's a
+bit of a pain.\\
+Building the Linux Kernel & Exercise 23 & Completed & Can't wait to start
+playing with the Kernel and changing it :) \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The main points I took away from these exercises were the following:
+\begin{itemize}
+ \item I'm really fascinated at how the Linux kernel was created, and how it
+accomplishes the tasks it needs to. I'd also be curious to know how small one
+could make it in order to put it on smaller and smaller platforms (possibly
+even cut into the market of Arduino [especially now that those are starting to
+grow in size]).
+  \item I feel like taking this class, especially checking out all the
+low level code, makes computing feel less high level and abstract, and adds a
+concreteness that 
+\end{itemize}
+
+\end{document}

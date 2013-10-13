@@ -1,0 +1,46 @@
+\documentclass[letterpaper,10pt]{texMemo}
+
+\usepackage{graphicx}
+
+\memoto{Dr. Mark Yoder}
+\memofrom{Michael McDonald}
+\memosubject{Week 3 (I$^2$C, PWM, Device Tree Overlays) Memo}
+\memodate{\today}
+\logo{\includegraphics[width=0.5\textwidth]{RoseLogo.png}}
+
+\begin{document}
+\maketitle
+
+\section{Exercise Summary}
+
+\begin{center}
+\begin{tabular}{|p{4cm}|l|l|p{8cm}|}
+\hline
+\textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
+\hline
+Device Tree Overlays & Exercise 11a & Completed & These pins seem to work, but
+I'm worried that the pins we need to use for our homework won't since they
+aren't free.\\
+\hline
+I$^2$C Communication & Exercise 12 & Completed & The only thing I noticed is
+that myi2cget requires the decimal versions of addresses, rather than hex.\\
+\hline
+PWM Control & Exercise 13 & Completed & A 1MHz signal is very crisp, but the
+10MHz signal was exactly as described (~9MHz and not clean at all). There's also
+a pretty impressive (~1V) overshoot above 3.3V for the faster signals.\\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The main points I took away from these exercises were the following:
+\begin{itemize}
+ \item The on-board hardware is awesome (both I$^2$C and PWM). It makes life so
+much easier, and decreases development time (and reduces frustration). That
+being said, it's much harder to understand how all of the layers interact
+because there are so many more layers between the software and the hardware.
+ \item There's a difference between decimal and hexidecimal, and it can come
+around to bite you when doing I$^2$C if you aren't careful about which
+functions take what as an argument.
+\end{itemize}
+
+\end{document}
