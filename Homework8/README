@@ -1,0 +1,10 @@
+A few notes about this homework.
+
+Here are all the files necessary.
+
+The patch hello1.patch is located in examples/hello1.patch. I had some trouble getting the patch, since my whole branch structure didn't seem to work the same. Here's a handy way of making a patch from the last N commits:
+
+git format-patch -N HEAD --stdout > <filename>.patch
+
+Here's the link to where I got this.
+http://stackoverflow.com/a/16172120

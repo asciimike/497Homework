@@ -1,0 +1,185 @@
+From b11df03a61333e19dd808963edb02e213996c5fb Mon Sep 17 00:00:00 2001
+From: Michael McDonald <mcdonamp@rose-hulman.edu>
+Date: Tue, 22 Oct 2013 22:30:14 -0400
+Subject: [PATCH 1/4] Adding necessary files for a minimal kernel module.
+
+---
+ drivers/char/Kconfig           |    6 ++++++
+ drivers/char/Makefile          |    1 +
+ drivers/char/examples/Makefile |    1 +
+ drivers/char/examples/hello1.c |   16 ++++++++++++++++
+ 4 files changed, 24 insertions(+)
+ create mode 100644 drivers/char/examples/Makefile
+ create mode 100644 drivers/char/examples/hello1.c
+
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index 72bedad..0732879 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -6,6 +6,12 @@ menu "Character devices"
+ 
+ source "drivers/tty/Kconfig"
+ 
++config EXAMPLES
++	tristate "Enable Examples"
++	default m
++	---help---
++	  Enable compilation option for ELP driver examples
++
+ config DEVKMEM
+ 	bool "/dev/kmem virtual device support"
+ 	default y
+diff --git a/drivers/char/Makefile b/drivers/char/Makefile
+index 7ff1d0d..57ebd20 100644
+--- a/drivers/char/Makefile
++++ b/drivers/char/Makefile
+@@ -52,6 +52,7 @@ obj-$(CONFIG_TELCLOCK)		+= tlclk.o
+ obj-$(CONFIG_MWAVE)		+= mwave/
+ obj-$(CONFIG_AGP)		+= agp/
+ obj-$(CONFIG_PCMCIA)		+= pcmcia/
+++obj-$(CONFIG_EXAMPLES)		+= examples/
+ 
+ obj-$(CONFIG_HANGCHECK_TIMER)	+= hangcheck-timer.o
+ obj-$(CONFIG_TCG_TPM)		+= tpm/
+diff --git a/drivers/char/examples/Makefile b/drivers/char/examples/Makefile
+new file mode 100644
+index 0000000..8ba8130
+--- /dev/null
++++ b/drivers/char/examples/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_EXAMPLES) += hello1.o
+\ No newline at end of file
+diff --git a/drivers/char/examples/hello1.c b/drivers/char/examples/hello1.c
+new file mode 100644
+index 0000000..ef3009c
+--- /dev/null
++++ b/drivers/char/examples/hello1.c
+@@ -0,0 +1,16 @@
++/* Example Minimal Character Device Driver */
++#include <linux/module.h>
++static int __init hello_init(void)
++{
++printk(KERN_INFO “Hello Example Init\n”);
++return 0;
++}
++static void __exit hello_exit(void)
++{
++printk(“Hello Example Exit\n”);
++}
++module_init(hello_init);
++module_exit(hello_exit);
++MODULE_AUTHOR(“Chris Hallinan”);
++MODULE_DESCRIPTION(“Hello World Example”);
++MODULE_LICENSE(“GPL”);
+-- 
+1.7.9.5
+
+
+From 448e2d6c86933a17cb90ac14d2c728c0c1acfa8d Mon Sep 17 00:00:00 2001
+From: Michael McDonald <mcdonamp@rose-hulman.edu>
+Date: Tue, 22 Oct 2013 22:55:57 -0400
+Subject: [PATCH 2/4] Got rid of an extraneous plus sign.
+
+---
+ drivers/char/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/char/Makefile b/drivers/char/Makefile
+index 57ebd20..917aa65 100644
+--- a/drivers/char/Makefile
++++ b/drivers/char/Makefile
+@@ -52,7 +52,7 @@ obj-$(CONFIG_TELCLOCK)		+= tlclk.o
+ obj-$(CONFIG_MWAVE)		+= mwave/
+ obj-$(CONFIG_AGP)		+= agp/
+ obj-$(CONFIG_PCMCIA)		+= pcmcia/
+-+obj-$(CONFIG_EXAMPLES)		+= examples/
++obj-$(CONFIG_EXAMPLES)		+= examples/
+ 
+ obj-$(CONFIG_HANGCHECK_TIMER)	+= hangcheck-timer.o
+ obj-$(CONFIG_TCG_TPM)		+= tpm/
+-- 
+1.7.9.5
+
+
+From d0b747c0fa655e4d7ed7da4f6c60d65c1d543be9 Mon Sep 17 00:00:00 2001
+From: Michael McDonald <mcdonamp@rose-hulman.edu>
+Date: Tue, 22 Oct 2013 23:02:09 -0400
+Subject: [PATCH 3/4] fixed broken quotation marks
+
+---
+ drivers/char/examples/hello1.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/char/examples/hello1.c b/drivers/char/examples/hello1.c
+index ef3009c..2e554c3 100644
+--- a/drivers/char/examples/hello1.c
++++ b/drivers/char/examples/hello1.c
+@@ -2,15 +2,17 @@
+ #include <linux/module.h>
+ static int __init hello_init(void)
+ {
+-printk(KERN_INFO “Hello Example Init\n”);
+-return 0;
++	printk(KERN_INFO "Hello Example Init\n");
++	return 0;
+ }
+ static void __exit hello_exit(void)
+ {
+-printk(“Hello Example Exit\n”);
++	printk("Hello Example Exit\n");
+ }
++
+ module_init(hello_init);
+ module_exit(hello_exit);
+-MODULE_AUTHOR(“Chris Hallinan”);
+-MODULE_DESCRIPTION(“Hello World Example”);
+-MODULE_LICENSE(“GPL”);
++
++MODULE_AUTHOR("Mike McDonald");
++MODULE_DESCRIPTION("Hello World Example");
++MODULE_LICENSE("GPL");
+-- 
+1.7.9.5
+
+
+From bee94b8a10933d195a79eb6aa5753abb44a9d992 Mon Sep 17 00:00:00 2001
+From: Michael McDonald <mcdonamp@rose-hulman.edu>
+Date: Tue, 22 Oct 2013 23:25:41 -0400
+Subject: [PATCH 4/4] Modified to take two parameters, debug_enable and
+ debug_level
+
+---
+ drivers/char/examples/hello1.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/char/examples/hello1.c b/drivers/char/examples/hello1.c
+index 2e554c3..38d4275 100644
+--- a/drivers/char/examples/hello1.c
++++ b/drivers/char/examples/hello1.c
+@@ -1,10 +1,22 @@
+ /* Example Minimal Character Device Driver */
+ #include <linux/module.h>
++
++static int debug_enable = 0;
++static int debug_level = 0;
++/* Added driver parameter */
++module_param(debug_enable, int, 0); /* and these 2 lines */
++MODULE_PARM_DESC(debug_enable, "Enable module debug mode.");
++
++module_param(debug_level, int, 0); 
++MODULE_PARM_DESC(debug_level, "Enable module debug level.");
++
+ static int __init hello_init(void)
+ {
+-	printk(KERN_INFO "Hello Example Init\n");
++	/* Now print value of new module parameter */
++	printk("Hello Example Init - debug mode is %s with debug level %d\n", debug_enable ? "enabled" : "disabled", debug_level);
+ 	return 0;
+ }
++
+ static void __exit hello_exit(void)
+ {
+ 	printk("Hello Example Exit\n");
+-- 
+1.7.9.5
+
