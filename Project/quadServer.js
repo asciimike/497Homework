@@ -10,13 +10,35 @@ var port = 1337, // Port to listen on
     fs = require('fs'),
     b = require('bonescript'),
     child_process = require('child_process'),
+    mpu6050 = require('mpu6050'),
     server,
     connectCount = 0,	// Number of connections to server
     errCount = 0;	// Counts the AIN errors.
-    
+
+var mpu = new mpu6050();
+    mpu.initialize();
 
 // Initialize various IO things.
 function initIO() {
+    var mpu = new mpu6050();
+    mpu.initialize();
+
+
+    if (mpu.testConnection()) {
+        console.log(mpu.getMotion6());
+    }
+}
+
+function refreshMPU() {
+    var mpu = new mpu6050();
+    mpu.initialize();
+
+    while (1) {
+	if (mpu.testConnection()) {
+	    socket.emit('mpuupdate',{mpudata: mpu.getMotion6()});
+	}
+	sleep(1000);
+    }
 }
 
 function send404(res) {
@@ -26,6 +48,7 @@ function send404(res) {
 }
 
 initIO();
+//refreshMPU();
 
 server = http.createServer(function (req, res) {
 // server code
@@ -58,6 +81,11 @@ io.sockets.on('connection', function (socket) {
 
     console.log("Connection " + socket.id + " accepted.");
 
+    socket.on('mpustart', function() {
+        //sleep(1000);
+        socket.emit('mpu',mpu.getMotion6());
+	});
+
     socket.on('disconnect', function () {
         console.log("Connection " + socket.id + " terminated.");
         connectCount--;
@@ -67,3 +95,14 @@ io.sockets.on('connection', function (socket) {
     connectCount++;
     console.log("connectCount = " + connectCount);
 });
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+
