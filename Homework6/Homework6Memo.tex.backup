@@ -13,7 +13,7 @@
 
 \section{Homework 6 Summary}
 \noindent Definitions for CONFIG\_CPU\_V6, CONFIG\_CPU\_V6K, and CONFIG\_CPU\_V7
-can be found in .../arch/arm/mm/Kconfig and look something like this:
+can be found in \verb .../arch/arm/mm/Kconfig and look something like this:
 \begin{verbatim}
  # ARMv7
 config CPU_V7
@@ -33,7 +33,7 @@ config CPU_V7
 \end{verbatim}
 \noindent This basically creates a dependency tree of necessary components that
 must be initialized for this processor. The actual selection of which
-definition we use occurs in KERNEL/.config, which looks like this:
+definition we use occurs in \verb KERNEL/.config, which looks like this:
 
 \begin{verbatim}
 #
@@ -54,6 +54,10 @@ CONFIG_CPU_CP15_MMU=y
 \end{verbatim}
 
 \newpage
+\noindent The command \verb b  \verb start_kernel  can be found at line 104 in
+the file KERNEL/arch/arm/kernel/head-common.S, which is included at the bottom
+of KERNEL/arch/arm/kernel/head.S. This calls the start\_kernel() function in
+main.c, which is located in KERNEL/init/main.c, located at line 473.
 
 
 \section{Exercise Summary}
@@ -63,7 +67,11 @@ CONFIG_CPU_CP15_MMU=y
 \hline
 \textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
 \hline
- & Exercise  & Completed & \\
+ Boot sequence & Exercise 21a & Completed & The FAT partition seemed to
+already be loaded in \verb /media/BEAGLEBONE \\
+\hline
+ Systemd & Exercise 21b & Completed & The exercise reminded me that I need to
+learn JavaScript.\\
 \hline
 \end{tabular}
 \end{center}
@@ -71,7 +79,7 @@ CONFIG_CPU_CP15_MMU=y
 
 \noindent The main points I took away from these exercises were the following:
 \begin{itemize}
- \item
+ \item 
 \end{itemize}
 
 \end{document}

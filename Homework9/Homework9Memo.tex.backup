@@ -44,13 +44,22 @@ LEDs. What messages will be sent between the browser and the bone?
 essentially allows us to send messages between the different files. We have
 coupled matrixLED.js and boneServer.js through socket.io, which allows us to
 send messages and receive messages [the socket.on(``message'',
-callback_function(){function body}] and the  between the different files. When
+callback\_function(){function body}] and the  between the different files. When
 we send the message matrix to the bone, it goes ahead and pulls in the 8x8 LED
 matrix data from the LED matrix, which then sends a ``matrix'' message back to
 the client, which updates the colors of the LEDs that are displayed in our
 matrix on the client.
   \item When an LED is clicked in the browser, the LEDclick() function is
-called, and 
+called, and we update the current state of the LED at that position on the
+client, then we go ahead and use socket.io to send an ``i2cset'' message to
+update the actual LED's on the matrix.
+  \item Matrix.css uses the .on class to set the color and the border (as well
+as its color). I went ahead and modified that to have a .onred, .ongreen, and
+.onorange classes which control the red, green, and orange colorings of the
+LEDs.
+  \item I will control the LED's much the same as they are currently being
+controlled, except I will use essentially a finite state machine to control the
+transition between green, orange, red, and off in the LEDclick() function. 
 \end{enumerate}
 
 

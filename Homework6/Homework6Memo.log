@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.9.7)  13 OCT 2013 13:14
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.9.7)  14 OCT 2013 12:48
 entering extended mode
  %&-line parsing enabled.
 **Homework6Memo.tex
@@ -165,12 +165,6 @@ LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ppl/b/n' tried instead on input line 12.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ppl/b/n' tried instead on input line 14.
-
-Overfull \hbox (62.60083pt too wide) in paragraph at lines 15--17
-\OT1/ppl/m/n/10 Definitions for CON-FIG[]CPU[]V6, CON-FIG[]CPU[]V6K, and CON-FI
-G[]CPU[]V7 can be found in .../arch/arm/mm/Kconfig
- []
-
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 17.
 (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
@@ -178,26 +172,34 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./RoseLogo.png (PNG copy)>
 ]
-Overfull \hbox (10.12996pt too wide) in paragraph at lines 57--61
-\OT1/ppl/m/n/10 common.S, which is in-cluded at the bot-tom of KER-NEL/arch/arm
-/kernel/head.S. This calls the start[]kernel()
+Overfull \hbox (41.04308pt too wide) in paragraph at lines 58--63
+\OT1/ppl/m/n/10 The com-mand []\OT1/pcr/m/n/10 b []start_kernel \OT1/ppl/m/n/10
+ can be found at line 104 in the file []\OT1/pcr/m/n/10 KERNEL/arch/arm/kernel/
+head-common.S\OT1/ppl/m/n/10 , 
+ []
+
+
+Overfull \hbox (0.4325pt too wide) in paragraph at lines 58--63
+\OT1/ppl/m/n/10 which is in-cluded at the bot-tom of []\OT1/pcr/m/n/10 KERNEL/a
+rch/arm/kernel/head.S\OT1/ppl/m/n/10 . This calls the []\OT1/pcr/m/n/10 start_k
+ernel()
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 66.
+(Font)              <7> on input line 68.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 66.
+(Font)              <5> on input line 68.
 
-Overfull \hbox (6.13715pt too wide) in paragraph at lines 66--73
+Overfull \hbox (23.16687pt too wide) in paragraph at lines 68--79
  [] 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 79.
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 84.
 (/usr/share/texmf-texlive/tex/latex/psnfss/omsppl.fd
 File: omsppl.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 79.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 84.
  [2] (./Homework6Memo.aux) ) 
 Here is how much of TeX's memory you used:
  1447 strings out of 495061
@@ -206,13 +208,13 @@ Here is how much of TeX's memory you used:
  4643 multiletter control sequences out of 15000+50000
  7662 words of font info for 23 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 30i,8n,31p,190b,211s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 30i,9n,31p,190b,253s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.e
 nc}</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/sh
 are/texmf-texlive/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-texlive/
 fonts/type1/urw/palatino/uplb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/p
 alatino/uplr8a.pfb>
-Output written on Homework6Memo.pdf (2 pages, 100916 bytes).
+Output written on Homework6Memo.pdf (2 pages, 102612 bytes).
 PDF statistics:
  27 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

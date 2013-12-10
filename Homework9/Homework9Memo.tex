@@ -18,52 +18,58 @@
 \hline
 \textbf{Objective} & \textbf{Exercise} &\textbf{Status} & \textbf{Notes}\\
 \hline
- Boot sequence & Exercise  & Completed & \\
+ Device drivers & Exercise 26  & Completed & I was able to successfully create
+and modify the basic device driver.\\
 \hline
 \end{tabular}
 \end{center}
 
-\noindent I also completed last weeks homework by successfully installing the
-Kernel (3.8.13-bone28).
+\noindent I also completed last weeks homework by successfully making and
+installing the Kernel (3.8.13-bone28). Also, please check that my Kconfig file
+and boneServer.service are correct and in their proper place, as I believe they
+are (since you made a comment on these on last weeks memo).
 
 \section{MatrixLED Questions}
-\begin{enumerate}
- \item Before writing any code, write a paragraph describing how
-boneServer.js and the browser interact in the given example. For example,
-in matrixLED.js connect() is called to make a connection between the browser and
-the bone. The message “matrix” is sent to the bone. What happens in response
-to the message?
-  \item What happens when an “LED” is clicked on in the browser?
-  \item What entry in matrix.css is used to color the LED?
-  \item Write a high level paragraph about how you will control the two
-LEDs. What messages will be sent between the browser and the bone?
-\end{enumerate}
+% \begin{enumerate}
+%  \item Before writing any code, write a paragraph describing how
+% boneServer.js and the browser interact in the given example. For example,
+% in matrixLED.js connect() is called to make a connection between the browser and
+% the bone. The message “matrix” is sent to the bone. What happens in response
+% to the message?
+%   \item What happens when an “LED” is clicked on in the browser?
+%   \item What entry in matrix.css is used to color the LED?
+%   \item Write a high level paragraph about how you will control the two
+% LEDs. What messages will be sent between the browser and the bone?
+% \end{enumerate}
 
 \begin{enumerate}
  \item At a high level, the two Javascript files interact via socket.io, which
 essentially allows us to send messages between the different files. We have
 coupled matrixLED.js and boneServer.js through socket.io, which allows us to
 send messages and receive messages [the socket.on(``message'',
-callback_function(){function body}] and the  between the different files. When
+callback\_function(){function body}] and the  between the different files. When
 we send the message matrix to the bone, it goes ahead and pulls in the 8x8 LED
 matrix data from the LED matrix, which then sends a ``matrix'' message back to
 the client, which updates the colors of the LEDs that are displayed in our
 matrix on the client.
-  \item When an LED is clicked in the browser, the LEDclick() function is
-called, and we update the current state of the LED at that position on the
-client, then we go ahead and use socket.io to send an ``i2cset'' message to
-update the actual LED's on the matrix.
+  \item When an LED is clicked in the browser, the LEDclick() function in
+matrixLED.js is called, and we update the current state of the LED at that
+position on the client, then we go ahead and use socket.io to send an ``i2cset''
+message to boneServer.js to update the actual LED's on the matrix.
   \item Matrix.css uses the .on class to set the color and the border (as well
 as its color). I went ahead and modified that to have a .onred, .ongreen, and
 .onorange classes which control the red, green, and orange colorings of the
 LEDs.
   \item I will control the LED's much the same as they are currently being
-controlled, except I will use essentially a finite state machine to control the
-transition between green, orange, red, and off in the LEDclick() function. 
+controlled, except I will use a finite state machine set of if statements to
+control the transition and actual LED coloration between green, orange, red, and
+off in the LEDclick() function.
 \end{enumerate}
 
 
 \section{Project Progress}
-\noindent 
+\noindent I have ordered WiFi Dongles, so we should have those soon. Also' I've
+spent some time investigating Firebase, which I want to use for a real time
+back end.
 
 \end{document}

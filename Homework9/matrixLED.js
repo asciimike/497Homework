@@ -92,10 +92,10 @@ function LEDclick(i, j) {
 			$('#id' + i + '_' + j).removeClass('ongreen onred').addClass('onorange');
 		} else if (((disp[2*i] >> j) & 0x1) === 1) {
 			$('#id' + i + '_' + j).removeClass('onred onorange').addClass('ongreen');
-                } else if ((disp[2*i+1] >> j & 0x1) === 1) {
+        } else if ((disp[2*i+1] >> j & 0x1) === 1) {
 			$('#id' + i + '_' + j).removeClass('ongreen onorange').addClass('onred');
-                } else {	
-		        $('#id' + i + '_' + j).removeClass('ongreen onred onorange');
+        } else {	
+		    $('#id' + i + '_' + j).removeClass('ongreen onred onorange');
 		}
             }
         }
